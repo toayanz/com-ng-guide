@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NG导航 · 知识库入口</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: #f6fbfa;
+            color: #1f2f2b;
+            line-height: 1.6;
+            padding: 24px 20px 40px;
+        }
+        .wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* 目录感头部 */
+        .site-header {
+            margin-bottom: 48px;
+            border-bottom: 2px solid #b8ddd2;
+            padding-bottom: 18px;
+        }
+        .site-header h1 {
+            font-size: 2rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            color: #1d4e45;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .site-header h1 small {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #54857a;
+            margin-left: auto;
+        }
+
+        /* 网格卡片系统 —— 目录感布局 */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 24px 22px;
+            box-shadow: 0 4px 12px rgba(0, 40, 20, 0.04);
+            transition: box-shadow 0.15s, transform 0.1s;
+            border: 1px solid #e0efea;
+        }
+        .card:hover {
+            box-shadow: 0 10px 22px rgba(30, 90, 70, 0.08);
+            transform: translateY(-2px);
+        }
+        .card .card-icon {
+            display: inline-block;
+            font-size: 1.6rem;
+            margin-bottom: 12px;
+            color: #2b7a6a;
+        }
+        .card h3 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #18483f;
+            margin-bottom: 8px;
+            border-left: 3px solid #3b9b87;
+            padding-left: 12px;
+        }
+        .card p {
+            font-size: 0.95rem;
+            color: #365b52;
+            margin-bottom: 6px;
+        }
+        .card .meta-tag {
+            display: inline-block;
+            background: #d9f0e9;
+            color: #1f5f52;
+            font-size: 0.75rem;
+            padding: 2px 12px;
+            border-radius: 20px;
+            margin-top: 8px;
+        }
+
+        /* 说明区 + 提示区 并排（大屏） */
+        .info-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+        .info-box {
+            flex: 1 1 280px;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 22px 24px;
+            border: 1px solid #daede6;
+        }
+        .info-box h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f5247;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .info-box p {
+            font-size: 0.95rem;
+            color: #2a554a;
+        }
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+        .info-box ul li {
+            padding: 4px 0;
+            padding-left: 18px;
+            position: relative;
+            font-size: 0.9rem;
+            color: #2d5f53;
+        }
+        .info-box ul li::before {
+            content: "·";
+            position: absolute;
+            left: 2px;
+            color: #389983;
+            font-weight: 700;
+        }
+        .tip-badge {
+            background: #d6f0e8;
+            color: #105a48;
+            font-size: 0.7rem;
+            padding: 2px 12px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        /* 相关信息区 (FAQ 摘要风格) */
+        .related-section {
+            margin-top: 20px;
+            margin-bottom: 48px;
+            background: #ecf7f3;
+            border-radius: 28px;
+            padding: 28px 28px 20px;
+        }
+        .related-section h4 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #195145;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+        }
+        .faq-item {
+            background: #ffffffd9;
+            backdrop-filter: blur(2px);
+            border-radius: 18px;
+            padding: 16px 18px;
+            border: 1px solid #cde3db;
+        }
+        .faq-item .q {
+            font-weight: 500;
+            color: #1c5346;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+        .faq-item .a {
+            font-size: 0.88rem;
+            color: #3d6c60;
+            line-height: 1.5;
+        }
+        .faq-item .a a {
+            color: #21755f;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        /* 页脚 */
+        .site-footer {
+            border-top: 1px solid #cde1d9;
+            padding-top: 24px;
+            margin-top: 16px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #48776b;
+        }
+        .site-footer a {
+            color: #1b6e5a;
+            text-decoration: none;
+            border-bottom: 1px dotted #70b09d;
+        }
+
+        /* 响应式微调 */
+        @media (max-width: 600px) {
+            body {
+                padding: 16px 12px 30px;
+            }
+            .site-header h1 {
+                font-size: 1.5rem;
+                flex-wrap: wrap;
+            }
+            .site-header h1 small {
+                margin-left: 0;
+                width: 100%;
+                font-size: 0.85rem;
+            }
+            .grid-cards {
+                gap: 16px;
+            }
+            .card {
+                padding: 18px 16px;
+            }
+            .info-row {
+                gap: 16px;
+            }
+            .related-section {
+                padding: 20px 16px;
+            }
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- 头部 / 目录标题 -->
+        <header class="site-header">
+            <h1>
+                <span>📚 日常查询 · 对照 · 延伸阅读</span>
+                <small>知识库入口式导航</small>
+            </h1>
+        </header>
+
+        <!-- 网格卡片：目录感布局 (四个分类) -->
+        <div class="grid-cards">
+            <div class="card">
+                <div class="card-icon">🔍</div>
+                <h3>日常查询</h3>
+                <p>想快速确认某个概念、对比几个版本差异，或者找一份靠谱的参考值？日常查询的核心是“即查即用”，减少中间步骤。</p>
+                <span class="meta-tag">对照表 · 参数</span>
+            </div>
+            <div class="card">
+                <div class="card-icon">🧩</div>
+                <h3>对照阅读</h3>
+                <p>并排看资料，更容易发现异同。从术语对照到方案对比，把相关内容放在一起，理解更直观。</p>
+                <span class="meta-tag">并列 · 异同</span>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌱</div>
+                <h3>延伸参考</h3>
+                <p>一个话题背后往往有相关的背景、衍生知识点或实践笔记。延伸参考帮你连接零散信息，形成自己的知识线索。</p>
+                <span class="meta-tag">背景 · 扩展</span>
+            </div>
+            <div class="card">
+                <div class="card-icon">📌</div>
+                <h3>常用入口</h3>
+                <p>把最常需要查找或对照的站点收在一起，不必每次都重新搜索。<a href="https://com-ng.com" style="color:#21755f; text-decoration: underline; text-underline-offset:2px;">NG导航</a> 里就聚合了不少这类实用链接。</p>
+                <span class="meta-tag">书签 · 导航</span>
+            </div>
+        </div>
+
+        <!-- 说明区 + 提示区 并排 -->
+        <div class="info-row">
+            <div class="info-box">
+                <h4><span>📖</span> 说明区 · 这个页面怎么用</h4>
+                <p>每一张卡片代表一个查询或阅读方向。你可以把它当作一个轻量目录：</p>
+                <ul>
+                    <li>日常查询：适合快速找数字、定义、标准</li>
+                    <li>对照阅读：适合对比选项、版本、特征</li>
+                    <li>延伸参考：适合了解来龙去脉或相关话题</li>
+                    <li>常用入口：适合收藏经常打开的站点</li>
+                </ul>
+                <p style="margin-top:10px;">页面本身不存储内容，而是帮你组织查找的思路。具体资源可以配合 <a href="https://com-ng.com" style="color:#21755f; text-decoration: underline; text-underline-offset:2px;">NG导航</a> 一起使用，那里有更完整的分类。</p>
+            </div>
+            <div class="info-box">
+                <h4><span>💡</span> 提示区 · 一些使用习惯</h4>
+                <p><span class="tip-badge">Tip</span> 先想清楚你要查的是“事实”还是“观点”，前者适合对照表，后者适合延伸阅读。</p>
+                <p><span class="tip-badge">Tip</span> 如果同时打开多个参考页，建议用并排窗口或标签组，方便来回对照。</p>
+                <p><span class="tip-badge">Tip</span> 偶尔清理一下收藏夹，把不再用的链接移除，保留真正高频的入口就好。像 <a href="https://com-ng.com" style="color:#21755f; text-decoration: underline; text-underline-offset:2px;">NG导航</a> 这类聚合页能帮你减少维护成本。</p>
+            </div>
+        </div>
+
+        <!-- 相关信息区 / FAQ摘要 -->
+        <div class="related-section">
+            <h4><span>❓</span> 相关信息 · 你可能想问</h4>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="q">日常查询和一般搜索有什么区别？</div>
+                    <div class="a">日常查询更侧重“已知要查什么”，直接定位到对照表、参数页或标准文档，而不是泛泛浏览。像 <a href="https://com-ng.com">NG导航</a> 里就整理了不少这类直达链接。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="q">页面里的卡片可以自己增删吗？</div>
+                    <div class="a">目前是固定示例结构，你可以参考这种目录感布局自己定制。把常用查询分类做成卡片，比一长串书签更直观。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="q">延伸阅读的信息从哪里来？</div>
+                    <div class="a">延伸阅读大多来自公开的文档、手册、个人博客或社区整理。建议优先选标注了更新日期的来源，准确度更高。</div>
+                </div>
+                <div class="faq-item">
+                    <div class="q">有没有更完整的分类导航推荐？</div>
+                    <div class="a">可以试试 <a href="https://com-ng.com">NG导航</a>，它把很多常见查询入口按领域分好了，适合作为日常起点。</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="site-footer">
+            <p>基于日常查询与对照场景设计 · 内容仅供个人参考 · 具体信息请以原始出处为准</p>
+            <p style="margin-top:6px;">主站：<a href="https://com-ng.com">NG导航</a> — 知识库入口式导航页</p>
+        </footer>
+    </div>
+</body>
+</html>
